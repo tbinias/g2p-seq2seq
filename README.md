@@ -43,7 +43,7 @@ A pretrained model 2-layer LSTM with 512 hidden units is [available for download
 Unpack the model after download. The model is trained on [CMU English dictionary](http://github.com/cmusphinx/cmudict)
 
 ```
-wget -O g2p-seq2seq-cmudict.tar.gz https://sourceforge.net/projects/cmusphinx/files/G2P%20Models/g2p-seq2seq-cmudict.tar.gz/download 
+wget -O g2p-seq2seq-cmudict.tar.gz https://sourceforge.net/projects/cmusphinx/files/G2P%20Models/g2p-seq2seq-cmudict.tar.gz/download
 tar xf g2p-seq2seq-cmudict.tar.gz
 ```
 
@@ -96,11 +96,11 @@ It is a good idea to play with the following parameters:
   "--size" - Size of each model layer (Default: 64).
      We observed much better results with 512 units, but the training becomes slow
 
-  "--num_layers" - Number of layers in the model (Default: 2). 
-     For example, you can try 1 if the train set is not large enough, 
+  "--num_layers" - Number of layers in the model (Default: 2).
+     For example, you can try 1 if the train set is not large enough,
      or 3 to hopefully get better results
 
-  "--learning_rate" - Initial Learning rate (Default: 0.5) 
+  "--learning_rate" - Initial Learning rate (Default: 0.5)
 
   "--learning_rate_decay_factor" - Learning rate decays by this much (Default: 0.8)
 ```
@@ -141,3 +141,21 @@ processing systems, pp. 3104-3112. 2014.
 models for grapheme-to-phoneme conversion." arXiv preprint
 arXiv:1506.00196, 2015.
 
+## Docker
+
+Build with:
+```docker build -t g2p --rm .```
+
+Test with model in interactive mode:
+```
+wget -O g2p-seq2seq-cmudict.tar.gz https://sourceforge.net/projects/cmusphinx/files/G2P%20Models/g2p-seq2seq-cmudict.tar.gz/download
+
+tar -xzf g2p-seq2seq-cmudict.tar.gz
+
+docker run -ti --rm -v $(pwd):/work g2p g2p-seq2seq --interactive --model /work/g2p-seq2seq-cmudict
+```
+
+Training with an existing dictionary:
+```
+docker run -ti --rm -v $(pwd):/work g2p g2p-seq2seq --train /work/cmusphinx-voxforge-de.dic --model /work/output
+```
